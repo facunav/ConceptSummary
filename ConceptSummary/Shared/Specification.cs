@@ -16,6 +16,12 @@ namespace ConceptSummary.Shared
     {
         public static readonly Specification<T> All = new IdentitySpecification<T>();
 
+        public bool IsSatisfiedBy(T entity)
+        {
+            Func<T, bool> predicate = ToExpression().Compile();
+            return predicate(entity);
+        }
+
         public abstract Expression<Func<T, bool>> ToExpression();
 
 
@@ -46,19 +52,19 @@ namespace ConceptSummary.Shared
 
     internal sealed class AndSpecification<T> : Specification<T>
     {
-        private readonly Specification<T> _left;
-        private readonly Specification<T> _right;
+        private readonly Specification<T> left;
+        private readonly Specification<T> right;
 
         public AndSpecification(Specification<T> left, Specification<T> right)
         {
-            _right = right;
-            _left = left;
+            this.right = right;
+            this.left = left;
         }
 
         public override Expression<Func<T, bool>> ToExpression()
         {
-            Expression<Func<T, bool>> leftExpression = _left.ToExpression();
-            Expression<Func<T, bool>> rightExpression = _right.ToExpression();
+            Expression<Func<T, bool>> leftExpression = left.ToExpression();
+            Expression<Func<T, bool>> rightExpression = right.ToExpression();
 
             BinaryExpression andExpression = Expression.AndAlso(leftExpression.Body, rightExpression.Body);
 
@@ -69,19 +75,19 @@ namespace ConceptSummary.Shared
 
     internal sealed class OrSpecification<T> : Specification<T>
     {
-        private readonly Specification<T> _left;
-        private readonly Specification<T> _right;
+        private readonly Specification<T> left;
+        private readonly Specification<T> right;
 
         public OrSpecification(Specification<T> left, Specification<T> right)
         {
-            _right = right;
-            _left = left;
+            this.right = right;
+            this.left = left;
         }
 
         public override Expression<Func<T, bool>> ToExpression()
         {
-            Expression<Func<T, bool>> leftExpression = _left.ToExpression();
-            Expression<Func<T, bool>> rightExpression = _right.ToExpression();
+            Expression<Func<T, bool>> leftExpression = left.ToExpression();
+            Expression<Func<T, bool>> rightExpression = right.ToExpression();
 
             BinaryExpression orExpression = Expression.OrElse(leftExpression.Body, rightExpression.Body);
 

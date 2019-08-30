@@ -4,10 +4,10 @@ namespace ConceptSummary.Discos
 {
     public class Disco
     {
-        public virtual string Name { get; set; }
-        public virtual string Band { get; set; }
-        public virtual DateTime EditionDate { get; set; }
-        public virtual string Genre { get; set; }
-        public virtual string Language { get; set; }
+        public string Name { get; set; }
+        public string Band { get; set; }
+        public DateTime EditionDate { get; set; }
+        public string Genre { get; set; }
+        public string Language { get; set; }
     }
 }
